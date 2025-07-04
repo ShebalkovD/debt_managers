@@ -1,7 +1,7 @@
 import { Bar, BarChart, Tooltip, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
 import { CustomToolTip } from './CustomToolTip'
 import type { JSX } from 'react'
-import type { Debts } from '../../types/debts'
+import type { DebtsList } from '../../types/debts'
 import Box from '@mui/material/Box';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { OverlayAlert } from '../OverlayAlert';
@@ -9,23 +9,27 @@ import { createRequest } from '../../api/createRequest';
 import { decodeSearchParams } from '../utils/decodeSearchParams';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
+import { debtsListDTO } from '../../types/debts';
 
 export const DebtsBar = (): JSX.Element => {
 
     const [searchParams] = useSearchParams();
 
-    const getData = (): Promise<Debts> => {
-        const result = createRequest<Debts>({
-        url: 'reports/sale_debts',
-        method: 'GET',
-        params: decodeSearchParams(searchParams),
+    const getData = (): Promise<DebtsList> => {
+        const result = createRequest<DebtsList, typeof debtsListDTO>({
+        options: {
+            url: 'reports/sale_debts',
+            method: 'GET',
+            params: decodeSearchParams(searchParams),
+        },
+        schema: debtsListDTO
         })
         return result
     }
 
     const query = decodeSearchParams(searchParams)
     
-    const {data, isPending, isError, error} = useQuery<Debts>({
+    const {data, isPending, isError, error} = useQuery<DebtsList>({
         queryKey: ['debts', query], 
         queryFn: getData
     })

@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from "@mui/material/Select"
 import { useEffect, useState } from "react";
 import { createRequest } from "../api/createRequest";
-import type { ManagersList } from "../types/managers";
+import { managerListDto, type ManagerList } from "../types/managers";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import { encodeSearchParams } from "./utils/encodeSearchParams";
@@ -15,10 +15,13 @@ import { decodeSearchParams } from "./utils/decodeSearchParams";
 export const ManagerFilter = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const getData = (): Promise<ManagersList> => {
-      const result = createRequest<ManagersList>({
+  const getData = (): Promise<ManagerList> => {
+      const result = createRequest<ManagerList, typeof managerListDto>({
+        options: {
           url: '/sale_managers',
           method: 'GET',
+        },
+        schema: managerListDto
       })
       return result
   }
