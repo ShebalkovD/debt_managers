@@ -1,5 +1,5 @@
 import type { JSX } from "react"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import { green } from '@mui/material/colors';
 import type { TooltipProps } from 'recharts';
@@ -44,6 +44,22 @@ export const CustomToolTip = ({
         padding: 2
     }
 
+    const validateTotal = useCallback((total: number): string => {
+        let initialString = total.toString()
+        const subStrings: string[] = []
+
+        while (initialString.length >= 3) {
+            subStrings.push(initialString.slice(-3))
+            initialString = initialString.replace(initialString.slice(-3), '')
+        }
+
+        subStrings.push(initialString)
+        
+        const result = subStrings.reverse().join(' ')
+        return result
+        
+    }, [])
+
     if (!active) {
         return null
     }
@@ -57,7 +73,7 @@ export const CustomToolTip = ({
                 flexDirection={"row"}
                 alignContent={"center"}
             >
-                <span><b>Долг:</b> {total}</span>
+                <span><b>Долг:</b> {validateTotal(total)}</span>
                 <CurrencyRubleIcon sx={{ color: green[500], transform: "translateY(-4px)" , fontSize: '24px'}}/> 
             </Stack>
         </Box>

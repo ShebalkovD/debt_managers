@@ -12,7 +12,7 @@ import { useSearchParams } from 'react-router';
 
 export const DebtsBar = (): JSX.Element => {
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     const getData = (): Promise<Debts> => {
         const result = createRequest<Debts>({
