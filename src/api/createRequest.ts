@@ -18,11 +18,8 @@ export function createRequest<Data, Schema extends z.ZodTypeAny>({
           const isInvalid = !schemaResult.success
 
           if (isInvalid) {
-            // eslint-disable-next-line no-console
             console.log('От сервера получены данные некорректного типа!');
-            // eslint-disable-next-line no-console
             console.log('Некорректные типы -->', schemaResult.error?.issues);
-            // eslint-disable-next-line no-console
             console.log('Данные -->', res.data);
             throw new Error('Сервер вернул неверный формат данных.');
           }
