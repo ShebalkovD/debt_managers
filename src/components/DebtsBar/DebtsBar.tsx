@@ -58,7 +58,7 @@ export const DebtsBar = (): JSX.Element => {
         </ResponsiveContainer>
 
         <OverlayAlert 
-            enabled={!isLoading && !data?.debts}
+            enabled={!isLoading && !data?.debts && !isError}
             severity='info'
             text="Нет данных для отображения"
         />
