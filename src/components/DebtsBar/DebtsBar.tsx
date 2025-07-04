@@ -31,16 +31,11 @@ export const DebtsBar = (): JSX.Element => {
     })
     
     const isLoading = isPending
-    if (isError) return <>Произошла ошибка: {error.message}</>
 
     return(
     <Box sx={{height:600, width: '100%', position: "relative", marginTop: "1rem", fontFamily: "sans-serif"}}>
         <LoadingOverlay isLoading={isLoading}/>
-        <OverlayAlert 
-            enabled={!isLoading && !data?.debts ? true : false}
-            severity='error'
-            text="Нет данных для отображения"
-        />
+        
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
                 data={data?.debts}
@@ -61,6 +56,17 @@ export const DebtsBar = (): JSX.Element => {
                 <Bar dataKey={"debt"} fill='blue'/>
             </BarChart>
         </ResponsiveContainer>
+
+        <OverlayAlert 
+            enabled={!isLoading && !data?.debts}
+            severity='info'
+            text="Нет данных для отображения"
+        />
+        <OverlayAlert 
+            enabled={isError}
+            severity='error'
+            text={'Ошибка: ' + error?.message}
+        />
     </Box>
     )
 }
