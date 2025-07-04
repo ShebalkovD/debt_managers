@@ -2,7 +2,7 @@ import * as z from 'zod'
 
 export const debtsItemDTO = z.object({
   customer: z.string(),
-  manager: z.string(),
+  manager: z.string().nullable(),
   debt: z.number()
 })
 
