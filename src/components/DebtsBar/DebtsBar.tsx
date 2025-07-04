@@ -5,13 +5,34 @@ import type { Debts } from '../../types/debts'
 import Box from '@mui/material/Box';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { OverlayAlert } from '../OverlayAlert';
+import { createRequest } from '../../api/createRequest';
+import { decodeSearchParams } from '../utils/decodeSearchParams';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router';
 
-type Props = {
-    data: Debts | undefined,
-    isLoading: boolean
-}
+export const DebtsBar = (): JSX.Element => {
 
-export const DebtsBar = ({data, isLoading}: Props): JSX.Element => {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const getData = (): Promise<Debts> => {
+        const result = createRequest<Debts>({
+        url: 'reports/sale_debts',
+        method: 'GET',
+        params: decodeSearchParams(searchParams),
+        })
+        return result
+    }
+
+    const query = decodeSearchParams(searchParams)
+    
+    const {data, isPending, isError, error} = useQuery<Debts>({
+        queryKey: ['debts', query], 
+        queryFn: getData
+    })
+    
+    const isLoading = isPending
+    if (isError) return <>Произошла ошибка: {error.message}</>
+
     return(
     <Box sx={{height:600, width: '100%', position: "relative", marginTop: "1rem", fontFamily: "sans-serif"}}>
         <LoadingOverlay isLoading={isLoading}/>

@@ -12,7 +12,7 @@ import { useSearchParams } from "react-router";
 import { encodeSearchParams } from "./utils/encodeSearchParams";
 import { decodeSearchParams } from "./utils/decodeSearchParams";
 
-export const ManagerFilter = ({isLoading}: {isLoading: boolean}): JSX.Element => {
+export const ManagerFilter = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const getData = (): Promise<ManagersList> => {
@@ -72,7 +72,7 @@ export const ManagerFilter = ({isLoading}: {isLoading: boolean}): JSX.Element =>
         id="manager-select"
         value={currManager}
         label="Менеджер"
-        disabled={isLoading || isPending}
+        disabled={isPending}
         onChange={handleManagerChange}
       >
         {managers?.map(manager => (
